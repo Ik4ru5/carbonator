@@ -129,7 +129,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 			self.scheme = cli[0]
 			self.fqdn = cli[1]
 			
-			if cli[2] > 0 and cli[2] <= 65535
+			if cli[2] > 0 and cli[2] <= 65535:
 				self.port = int(cli[2])
 			else:
 				self.port = 80

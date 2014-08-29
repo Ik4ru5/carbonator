@@ -96,7 +96,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		if self.format.upper() != 'XML' or self.format.upper() != 'HTML':
 			return false
 	
-		file_name = 'IntegrisSecurity_Carbonator_' + self.scheme + '_' + self.fqdn + '_' + str(self.port) + '.' + format.lower()
+		file_name = self.reportPath + '_' + self.scheme + '_' + self.fqdn + '_' + str(self.port) + '.' + format.lower()
 		self._callbacks.generateScanReport(format.upper(), self.scanner_results, File(file_name))
 	
 		time.sleep(5)
@@ -111,7 +111,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 
 
 	def printUsage(self):
-		print "java -jar path/to/burp.jar scheme fqdn port [path [reportFormat]]"
+		print "java -jar path/to/burp.jar scheme fqdn port [path [reportFormat [reportPath]]"
 		print "for example: java -jar path/to/burp.jar http example.com 80 / XML"
 
 
@@ -141,6 +141,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 			elif len(cli) >= 4:
 				self.path = cli[3]
 				self.reportFormat = cli[4]
+				self.reportPath = cli[5]
 			else:
 				print "Unknown number of CLI arguments"
 				self.printUsage()

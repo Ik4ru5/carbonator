@@ -149,14 +149,14 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 				self.reportFormat = 'XML'
 				
 			if cli[5]:
-				if str(cli[5]).endswith('/')
+				if str(cli[5]).endswith('/'):
 					self.reportPath = cli[5]
 				else:
 					self.reportPath = cli[5] + '/'
 			else:
 				self.reportPath = './'
 				
-			if len(cli) > 6
+			if len(cli) > 6:
 				print "Unknown number of CLI arguments"
 				self.printUsage()
 				

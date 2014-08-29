@@ -91,11 +91,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		return
 
 
-	def generateReport(self):
-		if self.format.upper() != 'XML' or self.format.upper() != 'HTML':
-			print "Unkown format for report"
-			return false
-			
+	def generateReport(self):		
 		print "Generating report ... "
 		fileName = self.reportPath + self.scheme + '_' + self.fqdn + '_' + str(self.port) + '.' + format.lower()
 		self._callbacks.generateScanReport(format.upper(), self.scanner_results, File(fileName))
@@ -144,7 +140,11 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 				self.path = '/'
 				
 			if cli[4]:
-				self.reportFormat = cli[4]
+				if cli[4].upper() != 'XML' and cli[4].upper() != 'HTML':
+					print "Unkown format for report: %s" % cli[4]
+					return False
+				else:
+					self.reportFormat = cli[4]
 			else:
 				self.reportFormat = 'XML'
 				

@@ -103,19 +103,28 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 
 	def processCLI(self):
 		cli = self._callbacks.getCommandLineArguments()
+		
 		if len(cli) < 0:
 			print "Incomplete target information provided."
+			
 			return False
 		elif not cli:
 			print "Integris Security Carbonator is now loaded."
 			print "If Carbonator was loaded through the BApp store then you can run in headless mode simply adding the `-Djava.awt.headless=true` flag from within your shell. Note: If burp doesn't close at the conclusion of a scan then disable Automatic Backup on Exit."
 			print "For questions or feature requests contact us at carbonator at integris security dot com."
 			print "Visit carbonator at https://www.integrissecurity.com/Carbonator"
+			
 			return False
+			
 		elif cli[0] == 'https' or cli[0] == 'http': #cli[0]=scheme,cli[1]=fqdn,cli[2]=port
 			self.scheme = cli[0]
 			self.fqdn = cli[1]
-			self.port = int(cli[2])
+			
+			if cli[2] > 0 and cli[2] <= 65535
+				self.port = int(cli[2])
+			else:
+				self.port = 80
+				
 			if len(cli) == 3:
 				self.path = '/'
 			elif len(cli) >= 4:
@@ -124,6 +133,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 			else:
 				print "Unknown number of CLI arguments"
 				return False
+			
 			self.url = URL(self.scheme, self.fqdn, self.port, self.path)
 		else:
 			print "Invalid command line arguments supplied"

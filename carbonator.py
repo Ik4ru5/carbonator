@@ -57,9 +57,8 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		self._callbacks.removeScannerListener(self)
 		self._callbacks.excludeFromScope(self.url)
 	
-		print "Generating Report"
 		self.generateReport()
-		print "Report Generated"
+		
 		print "Closing Burp in", self.packet_timeout, "seconds."
 		time.sleep(self.packet_timeout)
 	
@@ -93,12 +92,15 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 
 	def generateReport(self):
 		if self.format.upper() != 'XML' or self.format.upper() != 'HTML':
+			print "Unkown format for report"
 			return false
-	
-		file_name = self.reportPath + '_' + self.scheme + '_' + self.fqdn + '_' + str(self.port) + '.' + format.lower()
-		self._callbacks.generateScanReport(format.upper(), self.scanner_results, File(file_name))
-	
-		time.sleep(5)
+			
+		print "Generating report ... "
+		fileName = self.reportPath + '_' + self.scheme + '_' + self.fqdn + '_' + str(self.port) + '.' + format.lower()
+		self._callbacks.generateScanReport(format.upper(), self.scanner_results, File(fileName))
+		
+		print "Report generated. File is located at %s" % (fileName)
+		
 		return
 
 

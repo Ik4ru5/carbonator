@@ -50,8 +50,10 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 	
 		while int(time.time()) - self.last_packet_seen <= self.packet_timeout:
 			time.sleep(1)
+		
 		print "No packets seen in the last", self.packet_timeout, "seconds."
 		print "Removing Listeners"
+		
 		self._callbacks.removeHttpListener(self)
 		self._callbacks.removeScannerListener(self)
 		self._callbacks.excludeFromScope(self.url)
@@ -142,6 +144,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 			else:
 				print "Unknown number of CLI arguments"
 				self.printUsage()
+				
 				return False
 			
 			self.url = URL(self.scheme, self.fqdn, self.port, self.path)

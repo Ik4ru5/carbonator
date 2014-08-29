@@ -108,6 +108,11 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		print "Visit carbonator at https://www.integrissecurity.com/Carbonator"
 
 
+	def printUsage(self):
+		print "java -jar path/to/burp.jar scheme fqdn port [path [reportFormat]]"
+		print "for example: java -jar path/to/burp.jar http example.com 80 / XML"
+
+
 	def processCLI(self):
 		cli = self._callbacks.getCommandLineArguments()
 		
@@ -136,6 +141,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 				self.reportFormat = cli[4]
 			else:
 				print "Unknown number of CLI arguments"
+				self.printUsage()
 				return False
 			
 			self.url = URL(self.scheme, self.fqdn, self.port, self.path)

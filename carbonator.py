@@ -134,12 +134,12 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 			else:
 				self.port = 80
 				
-			if cli[3]:
+			if len(cli) >= 3:
 				self.path = cli[3]
 			else:
 				self.path = '/'
 				
-			if cli[4]:
+			if len(cli) >= 4:
 				if str(cli[4]).endswith('/'):
 					self.reportPath = cli[4]
 				else:
@@ -147,7 +147,8 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 			else:
 				self.reportPath = './'
 				
-			if cli[5]:
+			
+			if len(cli) >=5:
 				if cli[5].upper() != 'XML' and cli[5].upper() != 'HTML':
 					print "Unkown format for report: %s" % cli[5]
 					return False

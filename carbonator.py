@@ -57,7 +57,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		self._callbacks.excludeFromScope(self.url)
 	
 		print "Generating Report"
-		self.generateReport('HTML')
+		self.generateReport(self.reportFormat)
 		print "Report Generated"
 		print "Closing Burp in", self.packet_timeout, "seconds."
 		time.sleep(self.packet_timeout)
@@ -70,6 +70,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 
 	def processHttpMessage(self, tool_flag, isRequest, current):
 		self.last_packet_seen = int(time.time())
+		
 		if tool_flag == self._callbacks.TOOL_SPIDER and isRequest: #if is a spider request then send to scanner
 			self.spider_results.append(current)
 			print "Sending new URL to Vulnerability Scanner: URL #", len(self.spider_results)
@@ -77,24 +78,27 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 				self._callbacks.doActiveScan(self.fqdn, self.port, 1, current.getRequest()) #returns scan queue, push to array
 			else:
 				self._callbacks.doActiveScan(self.fqdn, self.port, 0, current.getRequest()) #returns scan queue, push to array
+				
 		return
 
 
 	def newScanIssue(self, issue):
 		self.scanner_results.append(issue)
+		
 		print "New issue identified: Issue #",len(self.scanner_results);
+		
 		return
 
 
 	def generateReport(self, format):
-		if format != 'XML':
-			format = 'HTML'	
+		if format.upper() != 'XML' or format.upper() != 'HTML':
+			return false
 	
 		file_name = 'IntegrisSecurity_Carbonator_' + self.scheme + '_' + self.fqdn + '_' + str(self.port) + '.' + format.lower()
-		self._callbacks.generateScanReport(format, self.scanner_results, File(file_name))
+		self._callbacks.generateScanReport(format.upper(), self.scanner_results, File(file_name))
 	
 		time.sleep(5)
-	return
+		return
 
 
 	def processCLI(self):
@@ -116,6 +120,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 				self.path = '/'
 			elif len(cli) >= 4:
 				self.path = cli[3]
+				self.reportFormat = cli[4]
 			else:
 				print "Unknown number of CLI arguments"
 				return False

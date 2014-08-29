@@ -32,13 +32,13 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		else:
 			self.clivars = True
 	
-		print "Initiating Carbonator Against: ", str(self.url)
+		print "Initiating Carbonator against: %s", str(self.url)
 		#add to scope if not already in there.
 		if self._callbacks.isInScope(self.url) == 0:
 			self._callbacks.includeInScope(self.url)
 	
 		#added to ensure that the root directory is scanned
-		base_request = str.encode(str("GET " + self.path + " HTTP/1.1\nHost: " + self.fqdn + "\n\n"))
+		base_request = str.encode(str("GET %s HTTP/1.1\nHost: %s\n\n" % (self.path, self.fqdn)))
 		if(self.scheme == 'HTTPS'):
 			print self._callbacks.doActiveScan(self.fqdn, self.port, 1, base_request)
 		else:
@@ -51,8 +51,8 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		while int(time.time()) - self.last_packet_seen <= self.packet_timeout:
 			time.sleep(1)
 		
-		print "No packets seen in the last", self.packet_timeout, "seconds."
-		print "Removing Listeners"
+		print "No packets seen in the last %i seconds." % self.packet_timeout
+		print "Removing listeners"
 		
 		self._callbacks.removeHttpListener(self)
 		self._callbacks.removeScannerListener(self)
@@ -60,7 +60,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 	
 		self.generateReport()
 		
-		print "Closing Burp in", self.packet_timeout, "seconds."
+		print "Closing Burp Suite in %i seconds." % self.packet_timeout
 		time.sleep(self.packet_timeout)
 	
 		if self.clivars:
@@ -74,7 +74,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		
 		if tool_flag == self._callbacks.TOOL_SPIDER and isRequest: #if is a spider request then send to scanner
 			self.spider_results.append(current)
-			print "Sending new URL to Vulnerability Scanner: URL #", len(self.spider_results)
+			print "Sending new URL to Vulnerability Scanner: URL # %i" % len(self.spider_results)
 			if self.scheme == 'https':
 				self._callbacks.doActiveScan(self.fqdn, self.port, 1, current.getRequest()) #returns scan queue, push to array
 			else:
@@ -86,7 +86,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 	def newScanIssue(self, issue):
 		self.scanner_results.append(issue)
 		
-		print "New issue identified: Issue #",len(self.scanner_results);
+		print "New issue identified: Issue # %i " %len(self.scanner_results);
 		
 		return
 

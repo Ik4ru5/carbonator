@@ -38,7 +38,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 			self._callbacks.includeInScope(self.url)
 	
 		#added to ensure that the root directory is scanned
-		base_request = str.encode(str("GET " + self.path + " HTTP/1.1\nHost: " + self.fqdn+"\n\n"))
+		base_request = str.encode(str("GET " + self.path + " HTTP/1.1\nHost: " + self.fqdn + "\n\n"))
 		if(self.scheme == 'HTTPS'):
 			print self._callbacks.doActiveScan(self.fqdn, self.port, 1, base_request)
 		else:
@@ -59,7 +59,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		self._callbacks.excludeFromScope(self.url)
 	
 		print "Generating Report"
-		self.generateReport(self.reportFormat)
+		self.generateReport()
 		print "Report Generated"
 		print "Closing Burp in", self.packet_timeout, "seconds."
 		time.sleep(self.packet_timeout)
@@ -92,8 +92,8 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		return
 
 
-	def generateReport(self, format):
-		if format.upper() != 'XML' or format.upper() != 'HTML':
+	def generateReport(self):
+		if self.format.upper() != 'XML' or self.format.upper() != 'HTML':
 			return false
 	
 		file_name = 'IntegrisSecurity_Carbonator_' + self.scheme + '_' + self.fqdn + '_' + str(self.port) + '.' + format.lower()

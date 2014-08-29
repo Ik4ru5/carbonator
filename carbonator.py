@@ -1,3 +1,4 @@
+# -- coding: utf-8 --
 # Created by Blake Cornell, CTO, Integris Security LLC
 # Integris Security Carbonator - Beta Version - v1.2
 # Released under GPL Version 2 license.

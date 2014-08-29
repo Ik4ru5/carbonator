@@ -18,7 +18,6 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 	def registerExtenderCallbacks(self, callbacks):
 		self._callbacks = callbacks
 		self._callbacks.setExtensionName("Carbonator")
-		self._helpers = self._callbacks.getHelpers()
 		self.clivars = None
 
 		self.spider_results = []

@@ -32,7 +32,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		else:
 			self.clivars = True
 	
-		print "Initiating Carbonator against: %s", str(self.url)
+		print "Initiating Carbonator against: %s" % str(self.url)
 		#add to scope if not already in there.
 		if self._callbacks.isInScope(self.url) == 0:
 			self._callbacks.includeInScope(self.url)
@@ -86,7 +86,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 	def newScanIssue(self, issue):
 		self.scanner_results.append(issue)
 		
-		print "New issue identified: Issue # %i " %len(self.scanner_results);
+		print "New issue identified: Issue # %i " % len(self.scanner_results);
 		
 		return
 
@@ -94,6 +94,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 	def generateReport(self):		
 		print "Generating report ... "
 		fileName = self.reportPath + self.scheme + '_' + self.fqdn + '_' + str(self.port) + '.' + self.reportFormat.lower()
+		print "Saving to %s" % fileName
 		self._callbacks.generateScanReport(self.reportFormat.upper(), self.scanner_results, File(fileName))
 		
 		print "Report generated. File is located at %s" % (fileName)

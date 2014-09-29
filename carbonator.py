@@ -93,7 +93,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 
 	def generateReport(self):		
 		print "Generating report ... "
-		fileName = self.reportPath + self.scheme + '_' + self.fqdn + '_' + str(self.port) + '.' + self.reportFormat.lower()
+		fileName = self.reporName + '.' + self.reportFormat.lower()
 		self._callbacks.generateScanReport(self.reportFormat.upper(), self.scanner_results, File(fileName))
 		
 		print "Report generated. File is located at %s" % (fileName)
@@ -155,8 +155,13 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 					self.reportFormat = cli[5]
 			else:
 				self.reportFormat = 'XML'
+			
+			if cli[6]:
+				self.reportName = cli[4]
+			else:
+				self.reportPath = self.scheme + '_' + self.fqdn + '_' + str(self.port)
 				
-			if len(cli) > 6:
+			if len(cli) > 7:
 				print "Unknown number of CLI arguments"
 				self.printUsage()
 				

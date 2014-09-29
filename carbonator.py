@@ -1,5 +1,6 @@
 # -- coding: utf-8 --
 # Created by Blake Cornell, CTO, Integris Security LLC
+# Modified by Ik4ru5
 # Integris Security Carbonator - Beta Version - v1.2
 # Released under GPL Version 2 license.
 #
@@ -32,7 +33,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		else:
 			self.clivars = True
 	
-		print "Initiating Carbonator against: %s", str(self.url)
+		print "Initiating Carbonator against: %s" % str(self.url)
 		#add to scope if not already in there.
 		if self._callbacks.isInScope(self.url) == 0:
 			self._callbacks.includeInScope(self.url)
@@ -86,7 +87,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 	def newScanIssue(self, issue):
 		self.scanner_results.append(issue)
 		
-		print "New issue identified: Issue # %i " %len(self.scanner_results);
+		print "New issue identified: Issue # %i " % len(self.scanner_results);
 		
 		return
 
@@ -94,6 +95,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 	def generateReport(self):		
 		print "Generating report ... "
 		fileName = self.reporName + '.' + self.reportFormat.lower()
+		print "Saving to %s" % fileName
 		self._callbacks.generateScanReport(self.reportFormat.upper(), self.scanner_results, File(fileName))
 		
 		print "Report generated. File is located at %s" % (fileName)
@@ -134,12 +136,12 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 			else:
 				self.port = 80
 				
-			if cli[3]:
+			if len(cli) > 3:
 				self.path = cli[3]
 			else:
 				self.path = '/'
 				
-			if cli[4]:
+			if len(cli) > 4:
 				if str(cli[4]).endswith('/'):
 					self.reportPath = cli[4]
 				else:
@@ -147,7 +149,8 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 			else:
 				self.reportPath = './'
 				
-			if cli[5]:
+			
+			if len(cli) > 5:
 				if cli[5].upper() != 'XML' and cli[5].upper() != 'HTML':
 					print "Unkown format for report: %s" % cli[5]
 					return False

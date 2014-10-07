@@ -160,7 +160,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 				self.reportFormat = 'XML'
 			
 			if cli[6]:
-				self.reportName = cli[4]
+				self.reportName = cli[6]
 			else:
 				self.reportPath = self.scheme + '_' + self.fqdn + '_' + str(self.port)
 				

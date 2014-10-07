@@ -94,7 +94,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 
 	def generateReport(self):		
 		print "Generating report ... "
-		fileName = self.reporName + '.' + self.reportFormat.lower()
+		fileName = self.reportName + '.' + self.reportFormat.lower()
 		print "Saving to %s" % fileName
 		self._callbacks.generateScanReport(self.reportFormat.upper(), self.scanner_results, File(fileName))
 		
@@ -117,7 +117,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 
 	def processCLI(self):
 		cli = self._callbacks.getCommandLineArguments()
-		
+
 		if len(cli) < 0:
 			print "Incomplete target information provided."
 			
@@ -159,12 +159,12 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 			else:
 				self.reportFormat = 'XML'
 			
-			if cli[6]:
+			if len(cli) > 6:
 				self.reportName = cli[6]
 			else:
 				self.reportPath = self.scheme + '_' + self.fqdn + '_' + str(self.port)
 				
-			if len(cli) > 7:
+			if len(cli) > 8:
 				print "Unknown number of CLI arguments"
 				self.printUsage()
 				

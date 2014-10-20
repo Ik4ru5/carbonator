@@ -162,7 +162,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 			if len(cli) > 6:
 				self.reportName = cli[6]
 			else:
-				self.reportPath = self.scheme + '_' + self.fqdn + '_' + str(self.port)
+				self.reportName = self.scheme + '_' + self.fqdn + '_' + str(self.port)
 				
 			if len(cli) > 8:
 				print "Unknown number of CLI arguments"

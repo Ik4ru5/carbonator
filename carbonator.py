@@ -97,6 +97,7 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 		fileName = self.reportName + '.' + self.reportFormat.lower()
 		print "Saving to %s" % fileName
 		self._callbacks.generateScanReport(self.reportFormat.upper(), self.scanner_results, File(fileName))
+		self._callbacks.generateScanReport("HTML", self.scanner_results, File(fileName))
 		
 		print "Report generated. File is located at %s" % (fileName)
 		

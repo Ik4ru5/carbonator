@@ -94,12 +94,13 @@ class BurpExtender(IBurpExtender, IHttpListener, IScannerListener):
 
 	def generateReport(self):		
 		print "Generating report ... "
-		fileName = self.reportName + '.' + self.reportFormat.lower()
-		print "Saving to %s" % fileName
-		self._callbacks.generateScanReport(self.reportFormat.upper(), self.scanner_results, File(fileName))
-		self._callbacks.generateScanReport("HTML", self.scanner_results, File(fileName))
+		fileNameXML = self.reportPath + self.reportName + '.' + self.reportFormat.lower()
+		fileNameHTML = self.reportPath + self.reportName + '.html'
+		print "Saving to %s" % fileNameXML
+		self._callbacks.generateScanReport(self.reportFormat.upper(), self.scanner_results, File(fileNameXML))
+		self._callbacks.generateScanReport("HTML", self.scanner_results, File(fileNameHTML))
 		
-		print "Report generated. File is located at %s" % (fileName)
+		print "Report generated. File is located at %s" % (fileNameXML)
 		
 		return
 
